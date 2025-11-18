@@ -1,0 +1,88 @@
+{
+  "products": [
+    {
+      "id": 1,
+      "name": "Cappuccino",
+      "price": 3.5,
+      "category": "Beverage",
+      "photo": "https://images.unsplash.com/photo-1676278110316-efe09415d9b3?q=80&w=687&auto=format&fit=crop"
+    },
+    {
+      "id": 2,
+      "name": "Iced Latte",
+      "price": 4.0,
+      "category": "Beverage",
+      "photo": "https://images.unsplash.com/photo-1676278110316-efe09415d9b3?q=80&w=687&auto=format&fit=crop"
+    },
+    {
+      "id": 3,
+      "name": "Espresso Shot",
+      "price": 2.2,
+      "category": "Beverage",
+      "photo": "https://images.unsplash.com/photo-1676278110316-efe09415d9b3?q=80&w=687&auto=format&fit=crop"
+    },
+    {
+      "id": 4,
+      "name": "Croissant",
+      "price": 2.75,
+      "category": "Pastry",
+      "photo": "https://images.unsplash.com/photo-1676278110316-efe09415d9b3?q=80&w=687&auto=format&fit=crop"
+    },
+    {
+      "id": 5,
+      "name": "Chocolate Muffin",
+      "price": 3.2,
+      "category": "Pastry",
+      "photo": "https://images.unsplash.com/photo-1676278110316-efe09415d9b3?q=80&w=687&auto=format&fit=crop"
+    },
+    {
+      "id": 6,
+      "name": "Blueberry Cheesecake",
+      "price": 4.8,
+      "category": "Dessert",
+      "photo": "https://images.unsplash.com/photo-1676278110316-efe09415d9b3?q=80&w=687&auto=format&fit=crop"
+    },
+    {
+      "id": 7,
+      "name": "Strawberry Shortcake",
+      "price": 4.5,
+      "category": "Dessert",
+      "photo": "https://images.unsplash.com/photo-1676278110316-efe09415d9b3?q=80&w=687&auto=format&fit=crop"
+    },
+    {
+      "id": 8,
+      "name": "Club Sandwich",
+      "price": 6.2,
+      "category": "Savory",
+      "photo": "https://images.unsplash.com/photo-1676278110316-efe09415d9b3?q=80&w=687&auto=format&fit=crop"
+    },
+    {
+      "id": 9,
+      "name": "Ham & Cheese Sandwich",
+      "price": 5.0,
+      "category": "Savory",
+      "photo": "https://images.unsplash.com/photo-1676278110316-efe09415d9b3?q=80&w=687&auto=format&fit=crop"
+    },
+    {
+      "id": 10,
+      "name": "Cinnamon Roll",
+      "price": 3.5,
+      "category": "Pastry",
+      "photo": "https://images.unsplash.com/photo-1676278110316-efe09415d9b3?q=80&w=687&auto=format&fit=crop"
+    },
+    {
+      "id": 11,
+      "name": "Cappuccino",
+      "price": 3.5,
+      "category": "Beverage",
+      "photo": "https://images.unsplash.com/photo-1676278110316-efe09415d9b3?q=80&w=687&auto=format&fit=crop"
+    },
+    {
+      "id": 12,
+      "name": "Croissant",
+      "price": 2.75,
+      "category": "Pastry",
+      "photo": "https://images.unsplash.com/photo-1676278110316-efe09415d9b3?q=80&w=687&auto=format&fit=crop"
+    }
+  ]
+}

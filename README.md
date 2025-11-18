@@ -1,73 +1,91 @@
-# React + TypeScript + Vite
+# Cafe Checkout System
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A Vite + React + TypeScript single‑page app that powers a cafe checkout experience:
 
-Currently, two official plugins are available:
+- Loads products from a mocked API (`db.json`)
+- Deduplicates menu items, offers fuzzy search and sorting
+- Supports drink sizes with price adjustments
+- Provides a full cart flow (quantity adjustments, service charge, checkout receipts)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+---
 
-## React Compiler
+## Setup Instructions
 
-The React Compiler is currently not compatible with SWC. See [this issue](https://github.com/vitejs/vite-plugin-react/issues/428) for tracking the progress.
+1. **Install dependencies**
 
-## Expanding the ESLint configuration
+   ```bash
+   npm install
+   ```
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+2. **Run the mock API (JSON Server or equivalent)**
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+   ```bash
+   npx json-server --watch db.json --port 3000
+   ```
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+   The UI expects `http://localhost:3000/products`.
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+3. **Start the web app**
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+   ```bash
+   npm run dev
+   ```
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+   Visit the URL printed by Vite (default `http://localhost:5173`).
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+4. **Run type-check + production build (optional)**
+
+   ```bash
+   npm run build
+   ```
+
+5. **Run tests**
+
+   ```bash
+   npm run test
+   ```
+
+   Vitest + React Testing Library power the unit/component suite.
+
+---
+
+## Design Decisions
+
+### State Shape
+
+- **Redux Toolkit store** with two slices:
+  - `product`: holds fetched items, loading/error flags, search query, and sort key.
+  - `cart`: stores normalized cart entries (`CartItem`), subtotal, service charge, total, and the most recent receipt.
+- Cart items are keyed by `productId + size` so identical drinks of the same size merge while different sizes stay separate.
+- Types live in `src/types` for reuse across slices, hooks, and UI.
+
+### Component Structure & Hooks
+
+- **`App`** wires together header search, sorting, cart summary, and product grid.
+- **Presentation components** (`ProductItem`, `ProductList`, `SortBar`, `CartSummary`, `Header`) stay lean and receive typed props.
+- **Custom hooks** isolate logic:
+  - `useSearch` (dedupe + fuzzy search),
+  - `useSort` (memoized sorting),
+  - `useProductItem` (size selection + add-to-cart),
+  - `useCart` (quantity changes, removal, checkout).
+- **Utilities**:
+  - `utils/products.ts` centralizes dedupe, fuzzy search, and size-based pricing adjustments.
+  - `utils/cart.ts` keeps subtotal/service-charge math and ID helpers reusable from both the slice and hooks.
+
+### Trade-offs
+
+- **Redux over React Query**: Chosen for predictable state transitions and easier async thunk wiring; a data-fetching library could simplify caching but felt heavier for this scope.
+- **Client-side receipts**: Receipts live only in memory (`lastReceipt`); persisting them would require a backend or local storage.
+- **Single JSON server**: Fast to iterate, but lacks auth and business rules you’d expect from a real POS service.
+- **Sizing logic in code**: Price adjustments are hard-coded (e.g., ±$0.50). A real system would likely pull this from the API or a CMS.
+
+---
+
+## Known Limitations
+
+- **No persistence**: Reloading the page clears the cart and receipt.
+- **No error UI**: Fetch failures are tracked in state but aren’t surfaced visually yet.
+- **Accessibility gaps**: Main flows have basic semantics, but full keyboard navigation and screen-reader cues still need refinement.
+- **Testing coverage**: Vitest targets cart logic and CartSummary, but the rest of the UI/state remains untested.
+- **Currency & locale**: Values are formatted as USD without localization or multi-currency support.
+- **Single user**: No user accounts, order history, or concurrent session handling.
